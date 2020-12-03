@@ -1,6 +1,7 @@
 from functools import reduce
 from operator import mul
 
+
 def countTrees(infile):
 	trees = [0,0,0,0,0]
 	slopes = [1,3,5,7]
