@@ -1,5 +1,6 @@
 def ppt_batch_validate(infile):
 	#154 is too high
+	#152 is wrong
 	#124 is too low
 	with open(infile, 'r') as f:
 		passport = {}
@@ -24,22 +25,22 @@ def ppt_batch_validate(infile):
 		else:
 			if all(field_valid(field, entry) for field,entry in passport.items()):
 				valid_ppts += 1
-	return valid_ppts
+			return valid_ppts
 
 def field_valid(field, entry):
 	if field == 'byr':
 		if len(entry) == 4 and entry.isnumeric() and 1920 <= int(entry) <= 2002:
-			byr = True
+			return True
 		else:
 			return False
 	elif field == 'iyr':
 		if len(entry) == 4 and entry.isnumeric() and 2010 <= int(entry) <= 2020:
-			iyr = True
+			return True
 		else:
 			return False
 	elif field == 'eyr':
 		if len(entry) == 4 and entry.isnumeric() and 2020 <= int(entry) <= 2030:
-			eyr = True
+			return True
 		else:
 			return False
 	elif field == 'hgt':
@@ -48,21 +49,29 @@ def field_valid(field, entry):
 		except:
 			return False
 		if un == 'in' and ms.isnumeric() and 59 <= int(ms) <= 76:
-			hgt = True
+			return True
 		elif un == 'cm' and ms.isnumeric() and 150 <= int(ms) <= 193:
-			hgt = True
+			return True
 		else:
 			return False
 	elif field == 'hcl':
 		if entry[0] == '#' and len(entry) == 7:
 			if not all(c in '0123456789abcdef' for c in entry[1:]):
 				return False
+			else:
+				return True
+		else:
+			return False
 	elif field == 'ecl':
 		if entry not in {'amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth'}:
 			return False
+		else:
+			return True
 	elif field == 'pid':
 		if not (len(entry) == 9 and entry.isnumeric()):
 			return False
+		else:
+			return True
 	elif field != 'cid':
 		return False
 	return True
