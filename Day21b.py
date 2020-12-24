@@ -10,6 +10,7 @@ def read_food(line):
 def identify_allergies(infile):
     allergies = {}
     foods = set()
+    canon = {}
     with open(infile, 'r') as f:
         for line in f:
             for allergen, ingredients in read_food(line).items():
@@ -26,16 +27,22 @@ def identify_allergies(infile):
             else:
                 allergies[x] = {a for a in y if a in foods}
         for x in to_pop:
-            foods.difference_update(allergies.pop(x))
-    return foods, allergies
+            y = allergies.pop(x)
+            canon[x] = y
+            foods.difference_update(y)
+    return foods, allergies, canon
+
+def get_canon_list(canon):
+    return str([min(y) for x,y in sorted(canon.items())]).replace(' ', '')[1:-1]
+
 
 if __name__ == '__main__':
     infile = 'Advent21.txt'
-    foods, allergies = identify_allergies(infile)
+    foods, allergies, canon = identify_allergies(infile)
     clean_ingredients = 0
     with open(infile, 'r') as f:
         for row in f:
             for food in row.strip().split(' (')[0].split():
                 if food in foods:
                     clean_ingredients += 1
-    print(clean_ingredients)
+    print(get_canon_list(canon))
